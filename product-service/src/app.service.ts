@@ -1,8 +1,16 @@
+// product.service.ts
 import { Injectable } from '@nestjs/common';
 
 @Injectable()
-export class AppService {
-  getHello(): string {
-    return 'Hello World!';
+export class ProductService {
+  private products = [];
+
+  getAllProducts() {
+    return this.products;
+  }
+
+  createProduct(product) {
+    this.products.push(product);
+    return product;
   }
 }

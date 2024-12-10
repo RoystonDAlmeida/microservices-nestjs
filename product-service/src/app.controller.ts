@@ -1,12 +1,19 @@
+// product.controller.ts
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { ProductService } from './app.service';
 
 @Controller()
 export class ProductController {
-  @MessagePattern('create_product') // Listening for 'create_user' messages
+  constructor(private readonly productService: ProductService) {}
+
+  @MessagePattern({ cmd: 'get_products' })
+  getProducts() {
+    return this.productService.getAllProducts();
+  }
+
+  @MessagePattern({ cmd: 'create_product' })
   createProduct(data: any) {
-    console.log('Product data received:', data);
-    // Logic to create a user in the database goes here
-    return { success: true };
+    return this.productService.createProduct(data);
   }
 }
