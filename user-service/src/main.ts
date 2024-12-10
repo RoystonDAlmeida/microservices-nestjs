@@ -1,6 +1,8 @@
 import { NestFactory } from '@nestjs/core';
 import { AppModule } from './app.module';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import * as dotenv from 'dotenv';
+dotenv.config();
 
 async function bootstrap() {
   const app = await NestFactory.createMicroservice<MicroserviceOptions>( // Creates a Microservice instance
@@ -8,7 +10,7 @@ async function bootstrap() {
     {
       transport: Transport.RMQ, // Specifies RabbitMQ as transport layer
       options: {
-        urls: ['amqp://localhost:5672'], // RabbitMQ server URL
+        urls: [process.env.RABBITMQ_URL], // RabbitMQ server URL
         queue: 'user_queue', // Queue name for user service
         queueOptions: {
           durable: false,

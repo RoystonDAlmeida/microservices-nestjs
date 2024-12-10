@@ -1,12 +1,19 @@
+// user.controller.ts
 import { Controller } from '@nestjs/common';
 import { MessagePattern } from '@nestjs/microservices';
+import { UserService } from './app.service';
 
 @Controller()
 export class UserController {
-  @MessagePattern('create_user') // Listening for 'create_user' messages
+  constructor(private readonly userService: UserService) {}
+
+  @MessagePattern({ cmd: 'get_users' })
+  getUsers() {
+    return this.userService.getAllUsers();
+  }
+
+  @MessagePattern({ cmd: 'create_user' })
   createUser(data: any) {
-    console.log('User data received:', data);
-    // Logic to create a user in the database goes here
-    return { success: true };
+    return this.userService.createUser(data);
   }
 }
